@@ -1,0 +1,6 @@
+project:
+  name: astro-airflow
+webserver:
+  port: 8081
+postgres:
+  port: 5435
