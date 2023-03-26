@@ -6,7 +6,6 @@ from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.hooks.postgres_hook import PostgresHook
-from airflow.contrib.operators.slack_webhook_operator import SlackWebhookOperator
 
 
 def get_events_from_api(**context):
@@ -82,12 +81,4 @@ with DAG('usgs_harvester', default_args=default_args, schedule_interval='0 8 * *
         provide_context=True
     )
 
-    task_four = SlackWebhookOperator(
-        task_id='send_slack_notification',
-        http_conn_id='slack_conn',
-        webhook_token=Variable.get("SLACK_API_TOKEN"),
-        message="New earthquake events was successfully harvested.",
-        username='airflow'
-    )
-
-    task_one >> task_two >> task_three >> task_four
+    task_one >> task_two >> task_three
